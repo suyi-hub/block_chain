@@ -61,10 +61,25 @@ func GenesisBlock() *Block {
 }
 
 //5. 添加区块
+func (bc *BlockChain) AddBlock(data string) {
+	//如何获取前区块的哈希呢？？
+
+	//获取最后一个区块
+	lastBlock := bc.blocks[len(bc.blocks)-1]
+	prevHash := lastBlock.Hash
+
+	//a. 创建新的区块
+	block := NewBlock(data, prevHash)
+	//b. 添加到区块链数组中
+	bc.blocks = append(bc.blocks, block)
+}
+
 //6. 重构代码
 
 func main() {
 	bc := NewBlockChain()
+	bc.AddBlock("班长向班花转了50枚比特币！")
+	bc.AddBlock("班长又向班花转了50枚比特币！")
 
 	for i, block := range bc.blocks {
 
