@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go一期/bolt"
+	"./bolt"
 	"log"
 	//"fmt"
 )
@@ -107,5 +107,21 @@ func (bc *BlockChain) AddBlock(data string) {
 
 		return nil
 	})
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
