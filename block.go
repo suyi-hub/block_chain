@@ -71,6 +71,7 @@ func NewBlock(data string, prevBlockHash []byte) *Block {
 	return &block
 }
 
+/*
 //3. 生成哈希
 func (block *Block) SetHash() {
 	//var blockInfo []byte
@@ -84,6 +85,7 @@ func (block *Block) SetHash() {
 	blockInfo = append(blockInfo, Uint64ToByte(block.Nonce)...)
 	blockInfo = append(blockInfo, block.Data...)
 	*/
+	/*
 	tmp := [][]byte{
 		Uint64ToByte(block.Version),
 		block.PrevHash,
@@ -102,3 +104,4 @@ func (block *Block) SetHash() {
 	hash := sha256.Sum256(blockInfo)
 	block.Hash = hash[:]
 }
+*/
