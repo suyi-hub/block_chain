@@ -12,8 +12,9 @@ type CLI struct {
 }
 
 const Usage = `
-	addBlock --data DATA     "add data to blockchain"
-	printChain               "print all blockchain data" 
+	addBlock --data DATA     "添加区块"
+	printChain               "正向打印区块链"
+	printChainR              "反向打印区块链"
 `
 
 //接受参数的动作，我们放到一个函数中
@@ -48,8 +49,11 @@ func (cli *CLI) Run() {
 			fmt.Printf(Usage)
 		}
 	case "printChain":
-		fmt.Printf("打印区块\n")
+		fmt.Printf("正向打印区块\n")
 		cli.PrinBlockChain()
+	case "printChainR":
+		fmt.Printf("反向打印区块\n")
+		cli.PrinBlockChainReverse()
 	default:
 		fmt.Printf("无效的命令，请检查!\n")
 		fmt.Printf(Usage)

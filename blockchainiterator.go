@@ -46,3 +46,4 @@ func (it *BlockChainIterator) Next() *Block {
 
 	return &block
 }
+

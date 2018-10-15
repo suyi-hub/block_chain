@@ -98,7 +98,7 @@ func Deserialize(data []byte) Block {
 	//2. 使用解码器进行解码
 	err := decoder.Decode(&block)
 	if err != nil {
-		log.Panic("解码出错!")
+		log.Panic("解码出错!", err)
 	}
 
 	return block

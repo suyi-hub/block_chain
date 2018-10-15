@@ -3,7 +3,8 @@ package main
 import (
 	"./bolt"
 	"log"
-	//"fmt"
+	"fmt"
+	"bytes"
 )
 
 //4. 引入区块链
@@ -82,7 +83,7 @@ func GenesisBlock() *Block {
 //5. 添加区块
 func (bc *BlockChain) AddBlock(data string) {
 	//如何获取前区块的哈希呢？？
-	db := bc.db //区块链数据库
+	db := bc.db         //区块链数据库
 	lastHash := bc.tail //最后一个区块的哈希
 
 	db.Update(func(tx *bolt.Tx) error {
@@ -92,7 +93,6 @@ func (bc *BlockChain) AddBlock(data string) {
 		if bucket == nil {
 			log.Panic("bucket 不应该为空，请检查!")
 		}
-
 
 		//a. 创建新的区块
 		block := NewBlock(data, lastHash)
@@ -109,19 +109,33 @@ func (bc *BlockChain) AddBlock(data string) {
 	})
 }
 
+func (bc *BlockChain) Printchain() {
 
+	blockHeight := 0
+	bc.db.View(func(tx *bolt.Tx) error {
+		// Assume bucket exists and has keys
+		b := tx.Bucket([]byte("blockBucket"))
 
+		//从第一个key-> value 进行遍历，到最后一个固定的key时直接返回
+		b.ForEach(func(k, v []byte) error {
+			if bytes.Equal(k, []byte("LastHashKey")) {
+				return nil
+			}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+			block := Deserialize(v)
+			//fmt.Printf("key=%x, value=%s\n", k, v)
+			fmt.Printf("=============== 区块高度: %d ==============\n", blockHeight)
+			blockHeight++
+			fmt.Printf("版本号: %d\n", block.Version)
+			fmt.Printf("前区块哈希值: %x\n", block.PrevHash)
+			fmt.Printf("梅克尔根: %x\n", block.MerkelRoot)
+			fmt.Printf("时间戳: %d\n", block.TimeStamp)
+			fmt.Printf("难度值(随便写的）: %d\n", block.Difficulty)
+			fmt.Printf("随机数 : %d\n", block.Nonce)
+			fmt.Printf("当前区块哈希值: %x\n", block.Hash)
+			fmt.Printf("区块数据 :%s\n", block.Data)
+			return nil
+		})
+		return nil
+	})
+}

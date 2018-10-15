@@ -7,7 +7,14 @@ func (cli *CLI) AddBlock(data string) {
 	fmt.Printf("添加区块成功！\n")
 }
 
+//正向打印
 func (cli *CLI) PrinBlockChain() {
+	cli.bc.Printchain()
+	fmt.Printf("打印区块链完成\n")
+}
+
+//反向打印
+func (cli *CLI) PrinBlockChainReverse() {
 	bc := cli.bc
 	//创建迭代器
 	it := bc.NewIterator()
