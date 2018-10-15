@@ -3,6 +3,7 @@ package main
 import (
 	"go一期/bolt"
 	"log"
+	"fmt"
 )
 
 //4. 引入区块链
@@ -54,9 +55,15 @@ func NewBlockChain() *BlockChain {
 
 			//3. 写数据
 			//hash作为key， block的字节流作为value，尚未实现
-			bucket.Put(genesisBlock.Hash, genesisBlock.toByte())
+			bucket.Put(genesisBlock.Hash, genesisBlock.Serialize())
 			bucket.Put([]byte("LastHashKey"), genesisBlock.Hash)
 			lastHash = genesisBlock.Hash
+
+			//这是为了读数据测试，马上删掉
+			blockBytes := bucket.Get(genesisBlock.Hash)
+			block := Deserialize(blockBytes)
+			fmt.Printf("block info : %s\n", block)
+
 		} else {
 			lastHash = bucket.Get([]byte("LastHashKey"))
 		}
