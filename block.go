@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/sha256"
 	"time"
 	"bytes"
 	"encoding/binary"
