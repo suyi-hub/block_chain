@@ -141,3 +141,11 @@ func (bc *BlockChain) Printchain() {
 		return nil
 	})
 }
+
+//找到指定地址的所有的utxo
+func (bc *BlockChain) FindUTXOs(address string) []TXOutput {
+	var UTXO []TXOutput
+	//TODO
+
+	return UTXO
+}
