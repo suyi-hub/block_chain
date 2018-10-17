@@ -174,6 +174,7 @@ func (bc *BlockChain) FindUTXOs(address string) []TXOutput {
 					for _, j := range spentOutputs[string(tx.TXID)] {
 						//[]int64{0, 1} , j : 0, 1
 						if int64(i) == j {
+							fmt.Printf("111111")
 							//当前准备添加output已经消耗过了，不要再加了
 							continue OUTPUT
 						}
@@ -182,7 +183,11 @@ func (bc *BlockChain) FindUTXOs(address string) []TXOutput {
 
 				//这个output和我们目标的地址相同，满足条件，加到返回UTXO数组中
 				if output.PubKeyHash == address {
+					fmt.Printf("222222")
 					UTXO = append(UTXO, output)
+					fmt.Printf("333333 : %f\n" , UTXO[0].Value)
+				} else {
+					fmt.Printf("333333")
 				}
 			}
 
