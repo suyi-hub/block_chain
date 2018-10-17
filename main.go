@@ -3,7 +3,7 @@ package main
 //import "fmt"
 
 func main() {
-	bc := NewBlockChain()
+	bc := NewBlockChain("班长")
 	cli := CLI{bc}
 	cli.Run()
 }
