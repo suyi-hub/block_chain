@@ -185,25 +185,30 @@ func (bc *BlockChain) FindUTXOs(address string) []TXOutput {
 				if output.PubKeyHash == address {
 					fmt.Printf("222222")
 					UTXO = append(UTXO, output)
-					fmt.Printf("333333 : %f\n" , UTXO[0].Value)
+					fmt.Printf("333333 : %f\n", UTXO[0].Value)
 				} else {
 					fmt.Printf("333333")
 				}
 			}
 
-			//4. 遍历input，找到自己花费过的utxo的集合(把自己消耗过的标示出来)
-			for _, input := range tx.TXInputs {
-				//判断一下当前这个input和目标（李四）是否一致，如果相同，说明这个是李四消耗过的output,就加进来
-				if input.Sig == address {
-					//spentOutputs := make(map[string][]int64)
-					//indexArray := spentOutputs[string(input.TXid)]
-					//indexArray = append(indexArray, input.Index)
-					spentOutputs[string(input.TXid)] = append(spentOutputs[string(input.TXid)], input.Index)
-					//map[2222] = []int64{0}
-					//map[3333] = []int64{0, 1}
-				}
-			}
+			//如果当前交易是挖矿交易的话，那么不做遍历，直接跳过
 
+			if !tx.IsCoinbase() {
+				//4. 遍历input，找到自己花费过的utxo的集合(把自己消耗过的标示出来)
+				for _, input := range tx.TXInputs {
+					//判断一下当前这个input和目标（李四）是否一致，如果相同，说明这个是李四消耗过的output,就加进来
+					if input.Sig == address {
+						//spentOutputs := make(map[string][]int64)
+						//indexArray := spentOutputs[string(input.TXid)]
+						//indexArray = append(indexArray, input.Index)
+						spentOutputs[string(input.TXid)] = append(spentOutputs[string(input.TXid)], input.Index)
+						//map[2222] = []int64{0}
+						//map[3333] = []int64{0, 1}
+					}
+				}
+			} else {
+				fmt.Printf("这是coinbase，不做input遍历！")
+			}
 		}
 
 		if len(block.PrevHash) == 0 {
