@@ -6,8 +6,8 @@ import (
 	"crypto/rand"
 	"log"
 	"crypto/sha256"
-	"golang.org/x/crypto/ripemd160"
-	//"./lib/ripemd160"
+	//"golang.org/x/crypto/ripemd160"
+	"./lib/ripemd160"
 	//"github.com/btcsuite/btcutil/base58"
 	"./lib/base58"
 )
