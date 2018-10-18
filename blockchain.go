@@ -158,13 +158,13 @@ func (bc *BlockChain) FindUTXOs(address string) []TXOutput {
 
 		//2. 遍历交易
 		for _, tx := range block.Transactions {
-			fmt.Printf("current txid : %x\n", tx.TXID)
+			//fmt.Printf("current txid : %x\n", tx.TXID)
 
 		OUTPUT:
 		//3. 遍历output，找到和自己相关的utxo(在添加output之前检查一下是否已经消耗过)
 		//	i : 0, 1, 2, 3
 			for i, output := range tx.TXOutputs {
-				fmt.Printf("current index : %d\n", i)
+				//fmt.Printf("current index : %d\n", i)
 				//在这里做一个过滤，将所有消耗过的outputs和当前的所即将添加output对比一下
 				//如果相同，则跳过，否则添加
 				//如果当前的交易id存在于我们已经表示的map，那么说明这个交易里面有消耗过的output
@@ -176,7 +176,7 @@ func (bc *BlockChain) FindUTXOs(address string) []TXOutput {
 					for _, j := range spentOutputs[string(tx.TXID)] {
 						//[]int64{0, 1} , j : 0, 1
 						if int64(i) == j {
-							fmt.Printf("111111")
+							//fmt.Printf("111111")
 							//当前准备添加output已经消耗过了，不要再加了
 							continue OUTPUT
 						}
@@ -185,11 +185,11 @@ func (bc *BlockChain) FindUTXOs(address string) []TXOutput {
 
 				//这个output和我们目标的地址相同，满足条件，加到返回UTXO数组中
 				if output.PubKeyHash == address {
-					fmt.Printf("222222")
+					//fmt.Printf("222222")
 					UTXO = append(UTXO, output)
-					fmt.Printf("333333 : %f\n", UTXO[0].Value)
+					//fmt.Printf("333333 : %f\n", UTXO[0].Value)
 				} else {
-					fmt.Printf("333333")
+					//fmt.Printf("333333")
 				}
 			}
 
@@ -209,7 +209,7 @@ func (bc *BlockChain) FindUTXOs(address string) []TXOutput {
 					}
 				}
 			} else {
-				fmt.Printf("这是coinbase，不做input遍历！")
+				//fmt.Printf("这是coinbase，不做input遍历！")
 			}
 		}
 
@@ -242,13 +242,13 @@ func (bc *BlockChain) FindNeedUTXOs(from string, amount float64) (map[string][]u
 
 		//2. 遍历交易
 		for _, tx := range block.Transactions {
-			fmt.Printf("current txid : %x\n", tx.TXID)
+			//fmt.Printf("current txid : %x\n", tx.TXID)
 
 		OUTPUT:
 		//3. 遍历output，找到和自己相关的utxo(在添加output之前检查一下是否已经消耗过)
 		//	i : 0, 1, 2, 3
 			for i, output := range tx.TXOutputs {
-				fmt.Printf("current index : %d\n", i)
+				//fmt.Printf("current index : %d\n", i)
 				//在这里做一个过滤，将所有消耗过的outputs和当前的所即将添加output对比一下
 				//如果相同，则跳过，否则添加
 				//如果当前的交易id存在于我们已经表示的map，那么说明这个交易里面有消耗过的output
@@ -260,7 +260,7 @@ func (bc *BlockChain) FindNeedUTXOs(from string, amount float64) (map[string][]u
 					for _, j := range spentOutputs[string(tx.TXID)] {
 						//[]int64{0, 1} , j : 0, 1
 						if int64(i) == j {
-							fmt.Printf("111111")
+							//fmt.Printf("111111")
 							//当前准备添加output已经消耗过了，不要再加了
 							continue OUTPUT
 						}
@@ -301,7 +301,7 @@ func (bc *BlockChain) FindNeedUTXOs(from string, amount float64) (map[string][]u
 					}
 
 				} else {
-					fmt.Printf("333333")
+					//fmt.Printf("333333")
 				}
 			}
 
@@ -321,7 +321,7 @@ func (bc *BlockChain) FindNeedUTXOs(from string, amount float64) (map[string][]u
 					}
 				}
 			} else {
-				fmt.Printf("这是coinbase，不做input遍历！")
+				//fmt.Printf("这是coinbase，不做input遍历！")
 			}
 		}
 
