@@ -4,6 +4,8 @@ import (
 	"io/ioutil"
 	"bytes"
 	"encoding/gob"
+	"log"
+	"crypto/elliptic"
 )
 
 //定一个 Wallets结构，它保存所有的wallet以及它的地址
@@ -35,8 +37,15 @@ func (ws *Wallets) saveToFile() {
 
 	var buffer bytes.Buffer
 
+	//panic: gob: type not registered for interface: elliptic.p256Curve
+	gob.Register(elliptic.P256())
+
 	encoder := gob.NewEncoder(&buffer)
-	encoder.Encode(ws)
+	err := encoder.Encode(ws)
+	//一定要注意校验！！！
+	if err != nil {
+		log.Panic(err)
+	}
 
 	ioutil.WriteFile("wallet.dat", buffer.Bytes(), 0600)
 }
