@@ -222,6 +222,7 @@ func (bc *BlockChain) FindUTXOs(address string) []TXOutput {
 	return UTXO
 }
 
+//根据需求找到合理的utxo
 func (bc *BlockChain) FindNeedUTXOs(from string, amount float64) (map[string][]uint64, float64) {
 	//找到的合理的utxos集合
 	utxos := make(map[string][]uint64)
