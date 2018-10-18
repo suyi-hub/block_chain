@@ -7,7 +7,9 @@ import (
 	"log"
 	"crypto/sha256"
 	"golang.org/x/crypto/ripemd160"
-	"github.com/btcsuite/btcutil/base58"
+	//"./lib/ripemd160"
+	//"github.com/btcsuite/btcutil/base58"
+	"./lib/base58"
 )
 
 //这里的钱包时一结构，每一个钱包保存了公钥,私钥对
