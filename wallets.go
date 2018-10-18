@@ -17,8 +17,8 @@ type Wallets struct {
 //创建方法，
 func NewWallets() *Wallets {
 	var ws Wallets
-	ws.WalletsMap = make(map[string]*Wallet)
-	//ws := loadFile()
+	//ws.WalletsMap = make(map[string]*Wallet)
+	ws.loadFile()
 	return &ws
 }
 
@@ -51,3 +51,28 @@ func (ws *Wallets) saveToFile() {
 }
 
 //读取文件方法，把所有的wallet读出来
+func (ws *Wallets) loadFile() {
+
+	//读取内容
+	content, err := ioutil.ReadFile("wallet.dat")
+	if err != nil {
+		log.Panic(err)
+	}
+
+	//解码
+	//panic: gob: type not registered for interface: elliptic.p256Curve
+	gob.Register(elliptic.P256())
+
+	decoder := gob.NewDecoder(bytes.NewReader(content))
+
+	var wsLocal Wallets
+
+	err = decoder.Decode(&wsLocal)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	//ws = &wsLocal
+	//对于结构来说，里面有map的，要指定赋值，不要再最外层直接赋值
+	ws.WalletsMap = wsLocal.WalletsMap
+}
