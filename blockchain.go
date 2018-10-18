@@ -174,7 +174,6 @@ func (bc *BlockChain) FindNeedUTXOs(from string, amount float64) (map[string][]u
 				//UTXO = append(UTXO, output)
 				//fmt.Printf("333333 : %f\n", UTXO[0].Value)
 				//我们要实现的逻辑就在这里，找到自己需要的最少的utxo
-				//TODO
 				//3. 比较一下是否满足转账需求
 				//   a. 满足的话，直接返回 utxos, calc
 				//   b. 不满足继续统计
