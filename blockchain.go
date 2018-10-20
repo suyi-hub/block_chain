@@ -86,6 +86,14 @@ func GenesisBlock(address string) *Block {
 
 //5. 添加区块
 func (bc *BlockChain) AddBlock(txs []*Transaction) {
+
+	for _, tx := range txs {
+		if !bc.VerifyTransaction(tx) {
+			fmt.Printf("矿工发现无效交易!")
+			return
+		}
+	}
+
 	//如何获取前区块的哈希呢？？
 	db := bc.db         //区块链数据库
 	lastHash := bc.tail //最后一个区块的哈希
