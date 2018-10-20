@@ -141,7 +141,7 @@ func NewTransaction(from, to string, amount float64, bc *BlockChain) *Transactio
 
 	//3. 得到对应的公钥，私钥
 	pubKey := wallet.PubKey
-	privateKey := wallet.Private  //稍后再用
+	privateKey := wallet.Private //稍后再用
 
 	//传递公钥的哈希，而不是传递地址
 	pubKeyHash := HashPubKey(pubKey)
@@ -181,16 +181,33 @@ func NewTransaction(from, to string, amount float64, bc *BlockChain) *Transactio
 	tx := Transaction{[]byte{}, inputs, outputs}
 	tx.SetHash()
 
-
-
 	//签名，交易创建的最后进行签名
 	prevTXs := make(map[string]Transaction)
 
+	//找到所有引用的交易
+	//1. 根据inputs来找，有多少input, 就遍历多少次
+	//2. 找到目标交易，（根据TXid来找）
+	//3. 添加到prevTXs里面
+	for _, input := range tx.TXInputs {
+		//根据id查找交易本身，需要遍历整个区块链
+		tx := FindTransactionByTXid(input.TXid)
 
 
+
+		prevTXs[string(input.TXid)] = tx
+		//第一个input查找之后：prevTXs：
+			// map[2222]Transaction222
+
+		//第二个input查找之后：prevTXs：
+			// map[2222]Transaction222
+			// map[3333]Transaction333
+
+		//第三个input查找之后：prevTXs：
+			// map[2222]Transaction222
+			// map[3333]Transaction333(只不过是重新写了一次)
+	}
 
 	tx.Sign(*privateKey, prevTXs)
-
 
 	return &tx
 }
