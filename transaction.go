@@ -6,7 +6,6 @@ import (
 	"log"
 	"crypto/sha256"
 	"fmt"
-	"go一期/lib/base58"
 )
 
 const reward = 50
@@ -51,13 +50,9 @@ type TXOutput struct {
 func (output *TXOutput) Lock(address string) {
 	//1. 解码
 	//2. 截取出公钥哈希：去除version（1字节），去除校验码（4字节）
-	addressByte := base58.Decode(address) //25字节
-	len := len(addressByte)
-
-	pubKeyHash := addressByte[1:len-4]
 
 	//真正的锁定动作！！！！！
-	output.PubKeyHash = pubKeyHash
+	output.PubKeyHash = GetPubKeyFromAddress(address)
 }
 
 //给TXOutput提供一个创建的方法，否则无法调用Lock
@@ -151,7 +146,7 @@ func NewTransaction(from, to string, amount float64, bc *BlockChain) *Transactio
 	pubKeyHash := HashPubKey(pubKey)
 
 	//1. 找到最合理UTXO集合 map[string][]uint64
-	utxos, resValue := bc.FindNeedUTXOs(pubKeyHash , amount)
+	utxos, resValue := bc.FindNeedUTXOs(pubKeyHash, amount)
 
 	if resValue < amount {
 		fmt.Printf("余额不足，交易失败!")
