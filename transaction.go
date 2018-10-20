@@ -193,4 +193,29 @@ func NewTransaction(from, to string, amount float64, bc *BlockChain) *Transactio
 func (tx *Transaction) Sign(privateKey *ecdsa.PrivateKey, prevTXs map[string]Transaction) {
 	//具体签名的动作先不管，稍后继续
 	//TODO
+
+	//1. 创建一个当前交易的副本：txCopy，使用函数： TrimmedCopy：要把Signature和PubKey字段设置为nil
+	txCopy := tx.TrimmedCopy()
+	//2. 循环遍历txCopy的inputs，得到这个input索引的output的公钥哈希
+	//3. 生成要签名的数据。要签名的数据一定是哈希值
+	//a. 我们对每一个input都要签名一次，签名的数据是由当前input引用的output的哈希+当前的outputs（都承载在当前这个txCopy里面）
+	//b. 要对这个拼好的txCopy进行哈希处理，SetHash得到TXID，这个TXID就是我们要签名最终数据。
+	//4. 执行签名动作得到r,s字节流
+	//5. 放到我们所签名的input的Signature中
+
+}
+
+func (tx *Transaction) TrimmedCopy() Transaction {
+	var inputs []TXInput
+	var outputs []TXOutput
+
+	for _, input := range tx.TXInputs {
+		inputs = append(inputs, TXInput{input.TXid, input.Index, nil, nil})
+	}
+
+	for _, output := range tx.TXOutputs {
+		outputs = append(outputs, output)
+	}
+
+	return Transaction{tx.TXID, inputs, outputs}
 }
