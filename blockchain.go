@@ -312,6 +312,7 @@ func (bc *BlockChain) FindTransactionByTXid(id []byte) (Transaction, error) {
 
 	//4. 如果没找到，返回空Transaction，同时返回错误状态
 
+	fmt.Printf("1111111111 : id%x\n", id)
 	it := bc.NewIterator()
 
 	//1. 遍历区块链
@@ -367,6 +368,11 @@ func (bc *BlockChain) SignTransaction(tx *Transaction, privateKey *ecdsa.Private
 }
 
 func (bc *BlockChain) VerifyTransaction(tx *Transaction) bool {
+
+	if tx.IsCoinbase() {
+		return true
+	}
+
 	//签名，交易创建的最后进行签名
 	prevTXs := make(map[string]Transaction)
 
@@ -376,6 +382,7 @@ func (bc *BlockChain) VerifyTransaction(tx *Transaction) bool {
 	//3. 添加到prevTXs里面
 	for _, input := range tx.TXInputs {
 		//根据id查找交易本身，需要遍历整个区块链
+		fmt.Printf("2222222 : %x\n", input.TXid)
 		tx, err := bc.FindTransactionByTXid(input.TXid)
 
 		if err != nil {
