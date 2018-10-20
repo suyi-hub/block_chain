@@ -42,8 +42,12 @@ func (cli *CLI) PrinBlockChainReverse() {
 
 func (cli *CLI) GetBalance(address string) {
 
-	//1. 校验地址，稍后在做
-	//TODO
+	//1. 校验地址
+	if !IsValidAddress(address) {
+		fmt.Printf("地址无效 : %s\n", address)
+		return
+	}
+
 	//2. 生成公钥哈希
 	pubKeyHash := GetPubKeyFromAddress(address)
 
@@ -63,6 +67,19 @@ func (cli *CLI) Send(from, to string, amount float64, miner, data string) {
 	//fmt.Printf("amount : %f\n", amount)
 	//fmt.Printf("miner : %s\n", miner)
 	//fmt.Printf("data : %s\n", data)
+	//1. 校验地址
+	if !IsValidAddress(from) {
+		fmt.Printf("地址无效 from: %s\n", from)
+		return
+	}
+	if !IsValidAddress(to) {
+		fmt.Printf("地址无效 to: %s\n", to)
+		return
+	}
+	if !IsValidAddress(miner) {
+		fmt.Printf("地址无效 miner: %s\n", miner)
+		return
+	}
 
 	//1. 创建挖矿交易
 	coinbase := NewCoinbaseTX(miner, data)
