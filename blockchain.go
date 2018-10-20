@@ -357,3 +357,26 @@ func (bc *BlockChain) SignTransaction(tx *Transaction, privateKey *ecdsa.Private
 
 	tx.Sign(privateKey, prevTXs)
 }
+
+func (bc *BlockChain) VerifyTransaction(tx *Transaction) bool {
+	//签名，交易创建的最后进行签名
+	prevTXs := make(map[string]Transaction)
+
+	//找到所有引用的交易
+	//1. 根据inputs来找，有多少input, 就遍历多少次
+	//2. 找到目标交易，（根据TXid来找）
+	//3. 添加到prevTXs里面
+	for _, input := range tx.TXInputs {
+		//根据id查找交易本身，需要遍历整个区块链
+		tx, err := bc.FindTransactionByTXid(input.TXid)
+
+		if err != nil {
+			log.Panic(err)
+		}
+
+		prevTXs[string(input.TXid)] = tx
+
+	}
+
+	return tx.Verify(prevTXs)
+}
