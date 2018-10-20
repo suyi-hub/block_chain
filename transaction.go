@@ -147,6 +147,7 @@ func NewTransaction(from, to string, amount float64, bc *BlockChain) *Transactio
 	pubKey := wallet.PubKey
 	//privateKey := wallet.Private  //稍后再用
 
+	//传递公钥的哈希，而不是传递地址
 	pubKeyHash := HashPubKey(pubKey)
 
 	//1. 找到最合理UTXO集合 map[string][]uint64
